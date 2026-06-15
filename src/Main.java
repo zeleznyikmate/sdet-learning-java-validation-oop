@@ -1,29 +1,35 @@
 void main(String[] args) {
 
     Scanner sc = new Scanner(System.in);
-    UserDatabase db = new UserDatabase();
+
+    LoginValidator validator = new LoginValidator();
+
+    System.out.println("--- Üdvözöljük az ATM-nél! ---");
 
     for (int loginAttempts = 0; loginAttempts < 3; loginAttempts++) {
 
-        System.out.println("User: ");
-        String Username = sc.nextLine();
+        System.out.println("\nFelhasználónév:");
+        String un = sc.nextLine();
 
-        System.out.println("Pass: ");
-        String Password = sc.nextLine();
+        System.out.println("Jelszó:");
+        String pw = sc.nextLine();
 
-        String dbUser = db.getExpectedUsername();
-        String dbPass = db.getExpectedPassword();
+        boolean isSuccess = validator.validateLogin(un, pw);
 
-        if (Username.isEmpty() || Password.isEmpty()){
-            System.out.println("User or Pass is empty!");
-        }  else if (Username.equalsIgnoreCase(dbUser) && Password.equals(dbPass)){
-            System.out.println(" ");
-            System.out.println("login successful");
+        if (isSuccess) {
+            System.out.println("Sikeres belépés! Üdvözöljük a rendszerben.");
             break;
         } else {
-            System.out.println(" ");
-            System.out.println("login failed, try again");
-            System.out.println(" ");
+
+            int remainingAttempts = 3 - (loginAttempts + 1);
+
+            if (remainingAttempts > 0) {
+                System.out.println("Hibás adatok! Hátralévő próbálkozások száma: " + remainingAttempts);
+            } else {
+                System.out.println("Sajnáljuk, a kártyáját / fiókját biztonsági okokból ZÁROLTUK!");
+            }
         }
     }
+
+    System.out.println("\n--- Program vége ---");
 }
