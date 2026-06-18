@@ -1,4 +1,7 @@
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginValidatorTest {
@@ -6,29 +9,22 @@ public class LoginValidatorTest {
     LoginValidator validator = new LoginValidator();
 
     @Test
-    public void SuccessfulLogin() {
+    public void successfulLogin() {
         assertTrue(validator.validateLogin("admin", "titok"));
     }
 
     @Test
-    public void CaseInsensitiveUsername() {
+    public void caseInsensitiveUsername() {
         assertTrue(validator.validateLogin("ADMIN", "titok"));
     }
 
-    @Test
-    public void WrongPassword() {
-        assertFalse(validator.validateLogin("admin", "wrong_password"));
-    }
+    @ParameterizedTest
+    @CsvFileSource(resources = "/testdata/invalid_logins.csv")
 
-    @Test
-    public void WrongUsername() {
-        assertFalse(validator.validateLogin("hacker", "titok"));
-    }
+    public void invalidLoginAttempts(String username, String password) {
+        String finalUser = (username == null) ? "" : username;
+        String finalPass = (password == null) ? "" : password;
 
-    @Test
-    public void EmptyInputs() {
-        assertFalse(validator.validateLogin("", "titok"));
-        assertFalse(validator.validateLogin("admin", ""));
-        assertFalse(validator.validateLogin("", ""));
+        assertFalse(validator.validateLogin(finalUser, finalPass));
     }
 }
