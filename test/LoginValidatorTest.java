@@ -27,4 +27,11 @@ public class LoginValidatorTest {
 
         assertFalse(validator.validateLogin(finalUser, finalPass));
     }
+
+    @Test
+    public void nullInputsShouldReturnFalse() {
+        assertFalse(validator.validateLogin(null, "titok"));
+        assertFalse(validator.validateLogin("admin", null));
+        assertFalse(validator.validateLogin(null, null));
+    }
 }
