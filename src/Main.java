@@ -1,35 +1,37 @@
-void main(String[] args) {
+import java.util.Scanner;
 
-    Scanner sc = new Scanner(System.in);
+public class Main {
 
-    LoginValidator validator = new LoginValidator();
+    static void main(String[] args) {
 
-    System.out.println("--- Üdvözöljük az ATM-nél! ---");
+        Scanner scanner = new Scanner(System.in);
+        LoginValidator validator = new LoginValidator();
+        LoginSession session = new LoginSession();
 
-    for (int loginAttempts = 0; loginAttempts < 3; loginAttempts++) {
+        System.out.println("\n--- Üdvözöljük az ATM-nél ---");
 
-        System.out.println("\nFelhasználónév:");
-        String un = sc.nextLine();
+        while (session.canTryAgain()) {
+            System.out.print("\nFelhasználónév: ");
+            String username = scanner.nextLine();
 
-        System.out.println("Jelszó:");
-        String pw = sc.nextLine();
+            System.out.print("\nJelszó: ");
+            String password = scanner.nextLine();
 
-        boolean isSuccess = validator.validateLogin(un, pw);
+            boolean loginSuccessful = validator.validateLogin(username, password);
+            session.registerAttempt(loginSuccessful);
 
-        if (isSuccess) {
-            System.out.println("Sikeres belépés! Üdvözöljük a rendszerben.");
-            break;
-        } else {
-
-            int remainingAttempts = 3 - (loginAttempts + 1);
-
-            if (remainingAttempts > 0) {
-                System.out.println("Hibás adatok! Hátralévő próbálkozások száma: " + remainingAttempts);
+            if (loginSuccessful) {
+                System.out.println("\nSikeres bejelentkezés! Üdvözöljük, " + username + "!");
+                break;
             } else {
-                System.out.println("Sajnáljuk, a kártyáját / fiókját biztonsági okokból ZÁROLTUK!");
+                System.out.println("\nHibás felhasználónév vagy jelszó!");
             }
         }
-    }
 
-    System.out.println("\n--- Program vége ---");
+        if (session.isBlocked()) {
+            System.out.println("\nTúl sok hibás kísérlet. A bankkártyáját biztonsági okokból ideiglenesen letiltottuk!");
+        }
+
+        scanner.close();
+    }
 }
