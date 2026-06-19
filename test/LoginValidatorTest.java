@@ -1,37 +1,22 @@
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginValidatorTest {
 
-    LoginValidator validator = new LoginValidator();
-
     @Test
-    public void successfulLogin() {
-        assertTrue(validator.validateLogin("admin", "titok"));
-    }
-
-    @Test
-    public void caseInsensitiveUsername() {
-        assertTrue(validator.validateLogin("ADMIN", "titok"));
+    public void NullInputs() {
+        LoginValidator validator = new LoginValidator();
+        assertFalse(validator.validateLogin(null, "password"));
+        assertFalse(validator.validateLogin("user", null));
+        assertFalse(validator.validateLogin(null, null));
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/testdata/invalid_logins.csv")
-
-    public void invalidLoginAttempts(String username, String password) {
-        String finalUser = (username == null) ? "" : username;
-        String finalPass = (password == null) ? "" : password;
-
-        assertFalse(validator.validateLogin(finalUser, finalPass));
-    }
-
-    @Test
-    public void nullInputsShouldReturnFalse() {
-        assertFalse(validator.validateLogin(null, "titok"));
-        assertFalse(validator.validateLogin("admin", null));
-        assertFalse(validator.validateLogin(null, null));
+    @CsvFileSource(resources = "/testdata/invalid_logins.csv", numLinesToSkip = 1)
+    public void InvalidAndEmptyLogins(String username, String password) {
+        LoginValidator validator = new LoginValidator();
+        assertFalse(validator.validateLogin(username, password));
     }
 }

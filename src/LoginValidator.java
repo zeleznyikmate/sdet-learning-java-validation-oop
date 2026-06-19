@@ -12,9 +12,6 @@ public class LoginValidator {
             return false;
         }
 
-        String expectedUsername = db.getExpectedUsername();
-        String expectedPassword = db.getExpectedPassword();
-
-        return inputUser.equalsIgnoreCase(expectedUsername) && inputPass.equals(expectedPassword);
+        return db.isValidUser(inputUser, inputPass);
     }
 }
