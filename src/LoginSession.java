@@ -10,8 +10,7 @@ public class LoginSession {
 
     public void registerAttempt(boolean success) {
         attempts++;
-        if (success) {
-        } else if (attempts >= maxAttempts) {
+        if (!success && attempts >= maxAttempts) {
             isBlocked = true;
         }
     }
