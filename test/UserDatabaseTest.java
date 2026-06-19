@@ -4,33 +4,20 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserDatabaseTest {
 
     @Test
-    public void ValidUserFromCsv() {
+    public void ValidCardFromCsv() {
         UserDatabase db = new UserDatabase();
-        assertTrue(db.isValidUser("admin", "titok"));
+         assertTrue(db.isValidCard("12345678", "4321"));
     }
 
     @Test
-    public void CaseInsensitivityForUsername() {
+    public void WrongPinCode() {
         UserDatabase db = new UserDatabase();
-        assertTrue(db.isValidUser("ADMIN", "titok"));
-        assertTrue(db.isValidUser("AdMiN", "titok"));
+        assertFalse(db.isValidCard("12345678", "0000"));
     }
 
     @Test
-    public void CaseSensitivityForPassword() {
+    public void NonExistingCardNumber() {
         UserDatabase db = new UserDatabase();
-         assertFalse(db.isValidUser("admin", "TITOK"));
-    }
-
-    @Test
-    public void WrongPassword() {
-        UserDatabase db = new UserDatabase();
-        assertFalse(db.isValidUser("admin", "hibasjelszo"));
-    }
-
-    @Test
-    public void NonExistingUser() {
-        UserDatabase db = new UserDatabase();
-        assertFalse(db.isValidUser("nemletezo_user", "barmely_jelszo"));
+         assertFalse(db.isValidCard("99999999", "4321"));
     }
 }

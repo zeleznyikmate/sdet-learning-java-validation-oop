@@ -5,28 +5,28 @@ import java.util.List;
 
 public class UserDatabase {
 
-    public boolean isValidUser(String username, String password) {
-          String filePath = "users.csv";
+    public boolean isValidCard(String cardNumber, String pinCode) {
+        String filePath = "cards.csv";
 
         try {
-                List<String> lines = Files.readAllLines(Paths.get(filePath));
+            List<String> lines = Files.readAllLines(Paths.get(filePath));
 
             for (String line : lines) {
-                   String[] parts = line.split(",");
+                String[] parts = line.split(",");
 
                 if (parts.length < 2) {
                     continue;
                 }
 
-                String fileUsername = parts[0].trim();
-                String filePassword = parts[1].trim();
+                String fileCardNumber = parts[0].trim();
+                String filePinCode = parts[1].trim();
 
-                if (fileUsername.equalsIgnoreCase(username) && filePassword.equals(password)) {
+                if (fileCardNumber.equals(cardNumber) && filePinCode.equals(pinCode)) {
                     return true;
                 }
             }
         } catch (IOException e) {
-              System.err.println("Hiba az adatbázis fájl olvasása közben: " + e.getMessage());
+            System.err.println("Hiba a kártyaaditbázis olvasása közben: " + e.getMessage());
         }
 
         return false;

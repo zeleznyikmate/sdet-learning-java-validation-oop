@@ -1,17 +1,19 @@
 public class LoginValidator {
+    private final UserDatabase db;
 
-    public boolean validateLogin(String inputUser, String inputPass) {
+    public LoginValidator(UserDatabase db) {
+        this.db = db;
+    }
 
-        UserDatabase db = new UserDatabase();
-
-        if (inputUser == null || inputPass == null) {
+    public boolean validateLogin(String cardNumber, String pinCode) {
+         if (cardNumber == null || pinCode == null || cardNumber.isEmpty() || pinCode.isEmpty()) {
             return false;
         }
 
-        if (inputUser.isEmpty() || inputPass.isEmpty()) {
+         if (!pinCode.matches("\\d{4}")) {
             return false;
         }
 
-        return db.isValidUser(inputUser, inputPass);
+        return db.isValidCard(cardNumber, pinCode);
     }
 }

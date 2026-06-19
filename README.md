@@ -1,22 +1,33 @@
-# SDET Learning: Java Input Validation & OOP Architecture
+ATM Simulator & OOP Validation Project
+This is an ATM Simulator written in Java, following clean Object-Oriented Programming (OOP) principles. The primary goal of this project is to demonstrate SDET (Software Development Engineer in Test) and software development best practices, with a strong focus on layered architecture, business logic isolation, and rigorous unit testing (JUnit 5).
 
-This repository demonstrates my journey of learning Java, Clean Code principles, and Unit Testing from scratch, specifically tailored for an **SDET (Software Development Engineer in Test)** career path.
+🏗️ Architecture and Design (SRP & Abstraction)
+The project breaks away from a monolithic structure and is divided into distinct components following the Single Responsibility Principle (SRP):
 
-## 📈 The Evolution of the Project
-Instead of just writing a final solution, this project was built incrementally to simulate real-world software refactoring:
-1. **Phase 1 (Procedural):** A simple, hardcoded `if-else` login logic using `Scanner`.
-2. **Phase 2 (Edge Cases):** Handling empty inputs and case-insensitivity (`equalsIgnoreCase`).
-3. **Phase 3 (Control Flow):** Introducing a `for` loop to limit the user to maximum 3 login attempts.
-4. **Phase 4 (OOP & Clean Architecture):** Separating the responsibilities into three distinct layers:
-    - `Main` (UI / Console layer)
-    - `LoginValidator` (Business logic layer)
-    - `UserDatabase` (Data layer)
-5. **Phase 5 (Testing):** Covering the core business logic with automated **JUnit 5** Unit Tests.
+Main: Handles the user interface (console interaction) and basic process flow control.
 
-## 🛠️ Tech Stack
-- **Language:** Java
-- **Testing Framework:** JUnit 5
-- **Version Control:** Git & GitHub
+LoginValidator: Performs technical pre-screening of input data (Null and Empty checks) and enforces ATM-specific formatting rules.
 
-## 🧪 Automated Tests
-The core validation logic is strictly tested to ensure reliability. More edge cases are being added continuously to achieve high test coverage.
+UserDatabase: The data abstraction layer that dynamically handles the storage (cards.csv), verifies credentials, and completely hides file operations from upper layers.
+
+LoginSession: A stateful class containing business logic to count failed attempts and handle security card blocking.
+
+🔒 ATM Business Rules
+Authentication: Login is processed using a card number and a PIN code (instead of a traditional username/password pair).
+
+PIN Validation: For security reasons, the system only passes PIN codes that consist of exactly 4 digits to the database.
+
+Security Lockout: After 3 consecutive failed attempts, the LoginSession blocks access for security reasons (the ATM swallows the card).
+
+📊 Database Format (cards.csv)
+Authentication data is stored in a comma-separated CSV file located at the root of the project:
+
+Code snippet
+12345678,4321
+87654321,1111
+🧪 Testing Strategy (JUnit 5)
+The robustness of the project is guaranteed by an extensive unit test suite covering all business logic:
+
+Data-Driven Testing: The LoginValidatorTest utilizes an external test data file (invalid_pins.csv) to perform Boundary Value Analysis and Equivalence Partitioning on malformed PIN formats (e.g., too short, too long, or containing alphabetic characters).
+
+Isolated Unit Tests: Separate test classes safeguard the internal logic of the session manager (LoginSessionTest) and the file reader (UserDatabaseTest), ensuring fast and reliable feedback.

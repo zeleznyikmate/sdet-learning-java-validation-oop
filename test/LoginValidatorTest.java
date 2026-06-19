@@ -6,17 +6,22 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LoginValidatorTest {
 
     @Test
-    public void NullInputs() {
-        LoginValidator validator = new LoginValidator();
-        assertFalse(validator.validateLogin(null, "password"));
-        assertFalse(validator.validateLogin("user", null));
-        assertFalse(validator.validateLogin(null, null));
+    public void NullAndEmptyInputs() {
+        UserDatabase db = new UserDatabase();
+        LoginValidator validator = new LoginValidator(db);
+
+        assertFalse(validator.validateLogin(null, "1234"));
+        assertFalse(validator.validateLogin("12345678", null));
+        assertFalse(validator.validateLogin("", "1234"));
+        assertFalse(validator.validateLogin("12345678", ""));
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/testdata/invalid_logins.csv", numLinesToSkip = 1)
-    public void InvalidAndEmptyLogins(String username, String password) {
-        LoginValidator validator = new LoginValidator();
-        assertFalse(validator.validateLogin(username, password));
+    @CsvFileSource(resources = "/testdata/invalid_pins.csv", numLinesToSkip = 0)
+    public void InvalidPinFormatsFromCsv(String invalidPin) {
+        UserDatabase db = new UserDatabase();
+        LoginValidator validator = new LoginValidator(db);
+
+        assertFalse(validator.validateLogin("12345678", invalidPin));
     }
 }
