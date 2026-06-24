@@ -1,4 +1,5 @@
 public class LoginValidator {
+
     private final UserDatabase db;
 
     public LoginValidator(UserDatabase db) {
