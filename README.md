@@ -25,6 +25,7 @@ Authentication data is stored in a comma-separated CSV file located at the root 
 Code snippet
 12345678,4321
 87654321,1111
+
 🧪 Testing Strategy (JUnit 5)
 The robustness of the project is guaranteed by an extensive unit test suite covering all business logic:
 

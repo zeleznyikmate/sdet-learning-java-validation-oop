@@ -6,10 +6,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LoginValidatorTest {
 
     @Test
-    public void NullAndEmptyInputs() {
+    public void should_RejectLogin_When_InputsAreNullOrEmpty() {
+        // GIVEN
         UserDatabase db = new UserDatabase();
         LoginValidator validator = new LoginValidator(db);
 
+        // WHEN & THEN
         assertFalse(validator.validateLogin(null, "1234"));
         assertFalse(validator.validateLogin("12345678", null));
         assertFalse(validator.validateLogin("", "1234"));
@@ -17,11 +19,13 @@ public class LoginValidatorTest {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/testdata/invalid_pins.csv", numLinesToSkip = 0)
-    public void InvalidPinFormatsFromCsv(String invalidPin) {
+    @CsvFileSource(resources = "/testdata/invalid_pins.csv")
+    public void should_RejectLogin_When_PinFormatIsInvalid(String invalidPin) {
+        // GIVEN
         UserDatabase db = new UserDatabase();
         LoginValidator validator = new LoginValidator(db);
 
+        // WHEN
         assertFalse(validator.validateLogin("12345678", invalidPin));
     }
 }
