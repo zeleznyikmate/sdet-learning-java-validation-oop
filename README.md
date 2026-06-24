@@ -21,7 +21,7 @@ Security Lockout: After 3 consecutive failed attempts, the LoginSession blocks a
 
 📊 Database Format (cards.csv)
 Authentication data is stored in a comma-separated CSV file located at the root of the project:
-
+t
 Code snippet
 12345678,4321
 87654321,1111
