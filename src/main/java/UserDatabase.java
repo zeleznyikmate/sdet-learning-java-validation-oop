@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDatabase {
-    private String filePath;
+    private final String filePath;
 
     public UserDatabase() {
         this.filePath = "cards.csv";
