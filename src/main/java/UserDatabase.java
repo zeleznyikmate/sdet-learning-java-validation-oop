@@ -5,12 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDatabase {
+    private String filePath;
+
+    public UserDatabase() {
+        this.filePath = "cards.csv";
+    }
+
+    public UserDatabase(String alternativeFilePath) {
+        this.filePath = alternativeFilePath;
+    }
 
     public boolean isValidCard(String cardNumber, String pinCode) {
-        String filePath = "cards.csv";
 
         try {
-            List<String> lines = Files.readAllLines(Paths.get(filePath));
+            List<String> lines = Files.readAllLines(Paths.get(this.filePath));
 
             for (String line : lines) {
                 String[] parts = line.split(",");
