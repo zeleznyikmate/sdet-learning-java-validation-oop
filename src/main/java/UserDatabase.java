@@ -16,17 +16,13 @@ public class UserDatabase {
     }
 
     public boolean isValidCard(String cardNumber, String pinCode) {
-
         try {
             List<String> lines = Files.readAllLines(Paths.get(this.filePath));
-
             for (String line : lines) {
                 String[] parts = line.split(",");
-
                 if (parts.length < 2) {
                     continue;
                 }
-
                 String fileCardNumber = parts[0].trim();
                 String filePinCode = parts[1].trim();
 
@@ -37,14 +33,12 @@ public class UserDatabase {
         } catch (IOException e) {
             System.err.println("Hiba a kártyaadatbázis olvasása közben: " + e.getMessage());
         }
-
         return false;
     }
 
     public double getBalance(String cardNumber) {
-        String filePath = "cards.csv";
         try {
-            List<String> lines = Files.readAllLines(Paths.get(filePath));
+            List<String> lines = Files.readAllLines(Paths.get(this.filePath));
             for (String line : lines) {
                 String[] parts = line.split(",");
                 if (parts.length >= 3 && parts[0].trim().equals(cardNumber)) {
@@ -58,9 +52,8 @@ public class UserDatabase {
     }
 
     public boolean updateBalance(String cardNumber, double newBalance) {
-        String filePath = "cards.csv";
         try {
-            List<String> lines = Files.readAllLines(Paths.get(filePath));
+            List<String> lines = Files.readAllLines(Paths.get(this.filePath));
             List<String> updatedLines = new ArrayList<>();
             boolean isCardFound = false;
 
@@ -76,7 +69,7 @@ public class UserDatabase {
             }
 
             if (isCardFound) {
-                Files.write(Paths.get(filePath), updatedLines);
+                Files.write(Paths.get(this.filePath), updatedLines);
                 return true;
             }
         } catch (IOException e) {

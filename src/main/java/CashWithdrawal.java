@@ -8,39 +8,18 @@ public class CashWithdrawal {
     }
 
     public void execute(String cardNumber, Scanner scanner) {
-        System.out.print("\nAdja meg a felvenni kívánt összeget (Ft): ");
-
-        if (!scanner.hasNextDouble()) {
-            System.out.println("Hiba: Kérjük, csak számot adjon meg!");
-            scanner.next();
-            return;
-        }
-
+        System.out.print("Adja meg a felvenni kívánt összeget: ");
         double amount = scanner.nextDouble();
-        scanner.nextLine();
+        execute(cardNumber, amount); // Meghívja az alatta lévő verziót
+    }
 
-        if (amount <= 0) {
-            System.out.println("Hiba: Érvénytelen összeg!");
-            return;
-        }
-
+    public void execute(String cardNumber, double amount) {
         double currentBalance = db.getBalance(cardNumber);
-
-        if (currentBalance < amount) {
-            System.out.println("Hiba: Nincs elegendő fedezet a számláján! (Aktuális: " + currentBalance + " Ft)");
-            return;
-        }
-
-        double newBalance = currentBalance - amount;
-        boolean success = db.updateBalance(cardNumber, newBalance);
-
-        if (success) {
-            System.out.println("\n---------------------------------");
-            System.out.println("Sikeres tranzakció! Kérjük, vegye át a készpénzt.");
-            System.out.println("Új egyenleg: " + newBalance + " Ft");
-            System.out.println("---------------------------------");
+        if (currentBalance >= amount) {
+            db.updateBalance(cardNumber, currentBalance - amount);
+            System.out.println("Sikeres pénzfelvétel: " + amount + " Ft");
         } else {
-            System.out.println("Hiba történt a tranzakció mentése során.");
+            System.out.println("Sikertelen pénzfelvétel: Nincs elég fedezet!");
         }
     }
 }
