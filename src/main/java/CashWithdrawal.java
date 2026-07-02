@@ -9,8 +9,13 @@ public class CashWithdrawal {
 
     public void execute(String cardNumber, Scanner scanner) {
         System.out.print("Adja meg a felvenni kívánt összeget: ");
-        double amount = scanner.nextDouble();
-        execute(cardNumber, amount); // Meghívja az alatta lévő verziót
+        String input = scanner.nextLine();
+        try {
+            double amount = Double.parseDouble(input);
+            execute(cardNumber, amount);
+        } catch (NumberFormatException e) {
+            System.out.println("Sikertelen pénzfelvétel: Érvénytelen összegformátum!");
+        }
     }
 
     public void execute(String cardNumber, double amount) {
